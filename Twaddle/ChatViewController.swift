@@ -27,6 +27,7 @@ class ChatViewController: UIViewController {
         // TODO: refactor to CoreDataHelper method
         do {
             let request: NSFetchRequest<Message> = Message.fetchRequest()
+            request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
             if let msgs = try context?.fetch(request) {
                 for msg in msgs {
                     addNew(message: msg)
@@ -190,9 +191,16 @@ class ChatViewController: UIViewController {
         var messages = sections[startDay]
         if messages == nil {
             dates.append(startDay)
+            dates = dates.sorted {
+                $0 < $1
+            }
+            
             messages = [Message]()
         }
         messages?.append(message)
+        messages?.sort {
+            ($0.timestamp as! Date) < ($1.timestamp as! Date)
+        }
         sections[startDay] = messages
     }
 
