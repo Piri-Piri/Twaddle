@@ -1,0 +1,41 @@
+//
+//  CoreDataHelper.swift
+//  Twaddle
+//
+//  Created by David Pirih on 12.11.16.
+//  Copyright © 2016 Piri-Piri. All rights reserved.
+//
+
+import CoreData
+
+class CoreDataHelper {
+    
+    static let shared = CoreDataHelper()
+
+    private init() {}
+
+    var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Twaddle")
+        container.loadPersistentStores { (storeDescription, error) in
+            
+            if let error = error {
+                let nserror = error as NSError
+                fatalError("Error: \(nserror.localizedDescription)")
+            }
+        }
+        
+        return container
+    }()
+    
+    func saveContext() {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Error: \(nserror.localizedDescription)")
+            }
+        }
+    }
+}

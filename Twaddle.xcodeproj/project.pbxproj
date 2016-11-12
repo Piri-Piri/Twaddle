@@ -7,17 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6320952B1DD7370100D1BF0D /* UITableView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */; };
+		6320952D1DD7560000D1BF0D /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */; };
+		632095301DD75A5A00D1BF0D /* Twaddle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6320952E1DD75A5A00D1BF0D /* Twaddle.xcdatamodeld */; };
+		6347EDF01DD670BE0071EEB5 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */; };
 		63BEEAAF1DD66A1C00C13AC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */; };
-		63BEEAB11DD66A1C00C13AC3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEEAB01DD66A1C00C13AC3 /* ViewController.swift */; };
+		63BEEAB11DD66A1C00C13AC3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */; };
 		63BEEAB41DD66A1C00C13AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63BEEAB21DD66A1C00C13AC3 /* Main.storyboard */; };
 		63BEEAB61DD66A1C00C13AC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63BEEAB51DD66A1C00C13AC3 /* Assets.xcassets */; };
 		63BEEAB91DD66A1C00C13AC3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63BEEAB71DD66A1C00C13AC3 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Scroll.swift"; sourceTree = "<group>"; };
+		6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
+		6320952F1DD75A5A00D1BF0D /* Twaddle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Twaddle.xcdatamodel; sourceTree = "<group>"; };
+		6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		63BEEAAB1DD66A1C00C13AC3 /* Twaddle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twaddle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		63BEEAB01DD66A1C00C13AC3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		63BEEAB31DD66A1C00C13AC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		63BEEAB51DD66A1C00C13AC3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63BEEAB81DD66A1C00C13AC3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,14 +62,50 @@
 		63BEEAAD1DD66A1C00C13AC3 /* Twaddle */ = {
 			isa = PBXGroup;
 			children = (
-				63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */,
-				63BEEAB01DD66A1C00C13AC3 /* ViewController.swift */,
-				63BEEAB21DD66A1C00C13AC3 /* Main.storyboard */,
-				63BEEAB51DD66A1C00C13AC3 /* Assets.xcassets */,
-				63BEEAB71DD66A1C00C13AC3 /* LaunchScreen.storyboard */,
-				63BEEABA1DD66A1C00C13AC3 /* Info.plist */,
+				63BEEAC01DD66A9500C13AC3 /* Controller */,
+				63BEEAC11DD66AA000C13AC3 /* Model */,
+				63BEEAC21DD66AC200C13AC3 /* View */,
+				63BEEAC31DD66AC800C13AC3 /* Resources */,
 			);
 			path = Twaddle;
+			sourceTree = "<group>";
+		};
+		63BEEAC01DD66A9500C13AC3 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		63BEEAC11DD66AA000C13AC3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */,
+				6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */,
+				6320952E1DD75A5A00D1BF0D /* Twaddle.xcdatamodeld */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		63BEEAC21DD66AC200C13AC3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				63BEEAB21DD66A1C00C13AC3 /* Main.storyboard */,
+				63BEEAB71DD66A1C00C13AC3 /* LaunchScreen.storyboard */,
+				6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */,
+				6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		63BEEAC31DD66AC800C13AC3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				63BEEAB51DD66A1C00C13AC3 /* Assets.xcassets */,
+				63BEEABA1DD66A1C00C13AC3 /* Info.plist */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +181,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63BEEAB11DD66A1C00C13AC3 /* ViewController.swift in Sources */,
+				6320952D1DD7560000D1BF0D /* CoreDataHelper.swift in Sources */,
+				6320952B1DD7370100D1BF0D /* UITableView+Scroll.swift in Sources */,
+				6347EDF01DD670BE0071EEB5 /* ChatCell.swift in Sources */,
+				63BEEAB11DD66A1C00C13AC3 /* ChatViewController.swift in Sources */,
+				632095301DD75A5A00D1BF0D /* Twaddle.xcdatamodeld in Sources */,
 				63BEEAAF1DD66A1C00C13AC3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,8 +350,22 @@
 				63BEEABF1DD66A1C00C13AC3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6320952E1DD75A5A00D1BF0D /* Twaddle.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6320952F1DD75A5A00D1BF0D /* Twaddle.xcdatamodel */,
+			);
+			currentVersion = 6320952F1DD75A5A00D1BF0D /* Twaddle.xcdatamodel */;
+			path = Twaddle.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 63BEEAA31DD66A1C00C13AC3 /* Project object */;
 }
