@@ -15,12 +15,12 @@ class CoreDataHelper {
     private init() {}
 
     var persistentContainer: NSPersistentContainer = {
+        
         let container = NSPersistentContainer(name: "Twaddle")
         container.loadPersistentStores { (storeDescription, error) in
             
             if let error = error {
-                let nserror = error as NSError
-                fatalError("Error: \(nserror.localizedDescription)")
+                fatalError("Error: \(error.localizedDescription)")
             }
         }
         
@@ -28,13 +28,13 @@ class CoreDataHelper {
     }()
     
     func saveContext() {
+        
         let context = persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
             } catch {
-                let nserror = error as NSError
-                fatalError("Error: \(nserror.localizedDescription)")
+                fatalError("Error: \(error.localizedDescription)")
             }
         }
     }

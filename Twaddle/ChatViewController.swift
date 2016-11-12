@@ -19,12 +19,13 @@ class ChatViewController: UIViewController {
     fileprivate var bottomConstraint: NSLayoutConstraint!
     fileprivate let cellIdentifier = "Cell"
     
+    // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // TODO: refactor to CoreDataHelper method
+        // TODO: may refactor to CoreDataHelper method
         do {
             let request: NSFetchRequest<Message> = Message.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
@@ -72,7 +73,7 @@ class ChatViewController: UIViewController {
         NSLayoutConstraint.activate(messageAreaConstraints)
         
         
-        tableView.register(ChatCell.self, forCellReuseIdentifier: cellIdentifier)
+        tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -154,7 +155,7 @@ class ChatViewController: UIViewController {
         guard let context = context else {
             return
         }
-        // TODO: refactor to CoreDataHelper method
+        // TODO: may refactor to CoreDataHelper method
         guard let msg = NSEntityDescription
             .insertNewObject(forEntityName: "Message", into: context) as? Message else {
             return
@@ -229,7 +230,7 @@ extension ChatViewController: UITableViewDataSource {
         let messages = getMessages(section: indexPath.section)
         let message = messages[indexPath.row]
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! ChatCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageCell
         cell.messageLabel.text = message.text
         cell.incoming(incoming: message.incoming)
         

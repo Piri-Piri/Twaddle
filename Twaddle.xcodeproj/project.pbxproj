@@ -10,7 +10,12 @@
 		6320952B1DD7370100D1BF0D /* UITableView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */; };
 		6320952D1DD7560000D1BF0D /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */; };
 		632095301DD75A5A00D1BF0D /* Twaddle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6320952E1DD75A5A00D1BF0D /* Twaddle.xcdatamodeld */; };
-		6347EDF01DD670BE0071EEB5 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */; };
+		632095381DD78B4800D1BF0D /* Chat+ComputedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632095371DD78B4800D1BF0D /* Chat+ComputedProperties.swift */; };
+		6320953A1DD78E0200D1BF0D /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 632095391DD78E0200D1BF0D /* ChatCell.swift */; };
+		6320953C1DD7972400D1BF0D /* AllChatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320953B1DD7972400D1BF0D /* AllChatsViewController.swift */; };
+		6320953E1DD7C89200D1BF0D /* Contact+ComputedProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320953D1DD7C89200D1BF0D /* Contact+ComputedProperties.swift */; };
+		632095401DD7CD6200D1BF0D /* NewChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6320953F1DD7CD6200D1BF0D /* NewChatViewController.swift */; };
+		6347EDF01DD670BE0071EEB5 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6347EDEF1DD670BE0071EEB5 /* MessageCell.swift */; };
 		63BEEAAF1DD66A1C00C13AC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */; };
 		63BEEAB11DD66A1C00C13AC3 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */; };
 		63BEEAB41DD66A1C00C13AC3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63BEEAB21DD66A1C00C13AC3 /* Main.storyboard */; };
@@ -22,7 +27,12 @@
 		6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Scroll.swift"; sourceTree = "<group>"; };
 		6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
 		6320952F1DD75A5A00D1BF0D /* Twaddle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Twaddle.xcdatamodel; sourceTree = "<group>"; };
-		6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		632095371DD78B4800D1BF0D /* Chat+ComputedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Chat+ComputedProperties.swift"; sourceTree = "<group>"; };
+		632095391DD78E0200D1BF0D /* ChatCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		6320953B1DD7972400D1BF0D /* AllChatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllChatsViewController.swift; sourceTree = "<group>"; };
+		6320953D1DD7C89200D1BF0D /* Contact+ComputedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Contact+ComputedProperties.swift"; sourceTree = "<group>"; };
+		6320953F1DD7CD6200D1BF0D /* NewChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatViewController.swift; sourceTree = "<group>"; };
+		6347EDEF1DD670BE0071EEB5 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		63BEEAAB1DD66A1C00C13AC3 /* Twaddle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twaddle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -62,9 +72,9 @@
 		63BEEAAD1DD66A1C00C13AC3 /* Twaddle */ = {
 			isa = PBXGroup;
 			children = (
-				63BEEAC01DD66A9500C13AC3 /* Controller */,
 				63BEEAC11DD66AA000C13AC3 /* Model */,
 				63BEEAC21DD66AC200C13AC3 /* View */,
+				63BEEAC01DD66A9500C13AC3 /* Controller */,
 				63BEEAC31DD66AC800C13AC3 /* Resources */,
 			);
 			path = Twaddle;
@@ -73,6 +83,8 @@
 		63BEEAC01DD66A9500C13AC3 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6320953B1DD7972400D1BF0D /* AllChatsViewController.swift */,
+				6320953F1DD7CD6200D1BF0D /* NewChatViewController.swift */,
 				63BEEAB01DD66A1C00C13AC3 /* ChatViewController.swift */,
 			);
 			name = Controller;
@@ -83,6 +95,8 @@
 			children = (
 				63BEEAAE1DD66A1C00C13AC3 /* AppDelegate.swift */,
 				6320952C1DD7560000D1BF0D /* CoreDataHelper.swift */,
+				632095371DD78B4800D1BF0D /* Chat+ComputedProperties.swift */,
+				6320953D1DD7C89200D1BF0D /* Contact+ComputedProperties.swift */,
 				6320952E1DD75A5A00D1BF0D /* Twaddle.xcdatamodeld */,
 			);
 			name = Model;
@@ -93,7 +107,8 @@
 			children = (
 				63BEEAB21DD66A1C00C13AC3 /* Main.storyboard */,
 				63BEEAB71DD66A1C00C13AC3 /* LaunchScreen.storyboard */,
-				6347EDEF1DD670BE0071EEB5 /* ChatCell.swift */,
+				632095391DD78E0200D1BF0D /* ChatCell.swift */,
+				6347EDEF1DD670BE0071EEB5 /* MessageCell.swift */,
 				6320952A1DD7370100D1BF0D /* UITableView+Scroll.swift */,
 			);
 			name = View;
@@ -181,12 +196,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				632095401DD7CD6200D1BF0D /* NewChatViewController.swift in Sources */,
 				6320952D1DD7560000D1BF0D /* CoreDataHelper.swift in Sources */,
+				6320953A1DD78E0200D1BF0D /* ChatCell.swift in Sources */,
+				6320953E1DD7C89200D1BF0D /* Contact+ComputedProperties.swift in Sources */,
 				6320952B1DD7370100D1BF0D /* UITableView+Scroll.swift in Sources */,
-				6347EDF01DD670BE0071EEB5 /* ChatCell.swift in Sources */,
+				6320953C1DD7972400D1BF0D /* AllChatsViewController.swift in Sources */,
+				6347EDF01DD670BE0071EEB5 /* MessageCell.swift in Sources */,
 				63BEEAB11DD66A1C00C13AC3 /* ChatViewController.swift in Sources */,
 				632095301DD75A5A00D1BF0D /* Twaddle.xcdatamodeld in Sources */,
 				63BEEAAF1DD66A1C00C13AC3 /* AppDelegate.swift in Sources */,
+				632095381DD78B4800D1BF0D /* Chat+ComputedProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

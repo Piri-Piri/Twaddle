@@ -17,8 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        let vc = window?.rootViewController as! ChatViewController
-        vc.context = CoreDataHelper.shared.persistentContainer.viewContext
+        let allChatsVC = AllChatsViewController()
+        let navCrtl = UINavigationController(rootViewController: allChatsVC)
+        window?.rootViewController = navCrtl
+        
+        let context = CoreDataHelper.shared.persistentContainer.viewContext
+        allChatsVC.context = context
+        
+        // TODO: remove fake data
+        fakeData(context: context)
         
         return true
     }
@@ -45,6 +52,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func fakeData(context: NSManagedObjectContext) {
+        let dataSeeded = UserDefaults.standard.bool(forKey: "dataSeeded")
+        guard !dataSeeded else {
+            return
+        }
+        
+        let people = [("John", "Nichols"), ("Matt", "Praker")]
+        for person in people {
+            let contact = NSEntityDescription.insertNewObject(forEntityName: "Contact", into: context) as! Contact
+            contact.firstName = person.0
+            contact.lastName = person.1
+        }
+        
+        // TODO: refactor to CoreDataHelper method
+        do {
+            try context.save()
+        } catch {
+            print("Error: Saving contacts (fake data) failed: \(error.localizedDescription)")
+        }
+        
+        UserDefaults.standard.set(true, forKey: "dataSeeded")
+    }
+    
 
 }
 
