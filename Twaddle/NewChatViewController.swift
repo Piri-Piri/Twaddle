@@ -9,18 +9,19 @@
 import UIKit
 import CoreData
 
-class NewChatViewController: UIViewController {
+class NewChatViewController: UIViewController, TableViewFetchedResultsDisplayer {
 
     // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?
     
     // TODO: may refactor (CoreDataHelper)?!?
     fileprivate var fetchedResultsController: NSFetchedResultsController<Contact>?
+    private var fetchedResultsDelegate: NSFetchedResultsControllerDelegate?
     
-    fileprivate var tableView = UITableView(frame: CGRect.zero, style: .plain)
+    private var tableView = UITableView(frame: CGRect.zero, style: .plain)
     fileprivate let cellIdentifier = "ContactCell"
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,18 +33,10 @@ class NewChatViewController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
-        view.addSubview(tableView)
         
-        let tableViewContraints: [NSLayoutConstraint] = [
-            tableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor)
-        ]
-        NSLayoutConstraint.activate(tableViewContraints)
+        fillViewWith(tableView)
         
         if let context = context {
             let request: NSFetchRequest<Contact> = Contact.fetchRequest()
@@ -55,7 +48,10 @@ class NewChatViewController: UIViewController {
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: "sortLetter",
                                                                   cacheName: "NewChatViewController")
-            fetchedResultsController?.delegate = self
+            fetchedResultsDelegate =
+                TableViewFetchedResultsDelegate(tableView: tableView,
+                                                displayer: self)
+            fetchedResultsController?.delegate = fetchedResultsDelegate
             do {
                 try fetchedResultsController?.performFetch()
             } catch {
@@ -126,47 +122,5 @@ extension NewChatViewController: UITableViewDelegate {
             return
         }
         
-    }
-}
-
-extension NewChatViewController: NSFetchedResultsControllerDelegate {
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        
-        switch type {
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            break
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .insert:
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
-        case .update:
-            let cell = tableView.cellForRow(at: indexPath!)
-            configure(cell: cell!, at: indexPath!)
-            tableView.reloadRows(at: [indexPath!], with: .fade)
-        case .move:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
-            tableView.insertRows(at: [newIndexPath!], with: .fade)
-        case .delete:
-            tableView.deleteRows(at: [indexPath!], with: .fade)
-        }
-    }
-    
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        
-        tableView.endUpdates()
     }
 }
