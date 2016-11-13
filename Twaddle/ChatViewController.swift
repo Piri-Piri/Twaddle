@@ -38,6 +38,7 @@ class ChatViewController: UIViewController {
             guard let context = context else { throw ChatError.noContext }
             
             let request: NSFetchRequest<Message> = Message.fetchRequest()
+            request.predicate = NSPredicate(format: "chat = %@", chat)
             request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
             
             let msgs = try context.fetch(request)
@@ -177,7 +178,8 @@ class ChatViewController: UIViewController {
         }
         msg.text = text
         msg.timestamp = NSDate()
-        msg.incoming = false
+        msg.chat = chat
+        chat?.lastMessageTime = msg.timestamp
         
         // TODO: refactor to CoreDataHelper method
         do {
@@ -241,7 +243,10 @@ class ChatViewController: UIViewController {
             self.chat = mainContext.object(with: chat.objectID) as? Chat
         }
     }
-
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension ChatViewController: UITableViewDataSource {
@@ -269,7 +274,7 @@ extension ChatViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as! MessageCell
         cell.messageLabel.text = message.text
-        cell.incoming(incoming: message.incoming)
+        cell.incoming(incoming: message.isIncoming)
         
         cell.separatorInset = UIEdgeInsetsMake(0, tableView.bounds.size.width, 0, 0)
         cell.backgroundColor = UIColor.clear

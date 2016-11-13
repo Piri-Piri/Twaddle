@@ -9,16 +9,17 @@
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Chat" inverseName="participants" inverseEntity="Chat" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="sender" inverseEntity="Message" syncable="YES"/>
     </entity>
-    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
-        <attribute name="incoming" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="category">
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Chat" inverseName="messages" inverseEntity="Chat" syncable="YES"/>
+        <relationship name="sender" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="messages" inverseEntity="Contact" syncable="YES"/>
     </entity>
     <elements>
         <element name="Chat" positionX="-414" positionY="54" width="128" height="88"/>
-        <element name="Contact" positionX="-216" positionY="54" width="128" height="88"/>
+        <element name="Contact" positionX="-216" positionY="54" width="128" height="103"/>
         <element name="Message" positionX="-218" positionY="-69" width="128" height="103"/>
     </elements>
 </model>

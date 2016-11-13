@@ -57,9 +57,6 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
                 print("Error: Fetching chats failed: \(error.localizedDescription)")
             }
         }
-        
-        // TODO: remove fake data (later)
-        fakeData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,38 +66,33 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     func newChat() {
         
         let newChatVC = NewChatViewController()
-        newChatVC.context = context
+        
+        // * child context for chats *
+        let chatContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        chatContext.parent = context
+        
+        newChatVC.context = chatContext
         newChatVC.chatCreationDelegate = self
         
         let navCtrl = UINavigationController(rootViewController: newChatVC)
         present(navCtrl, animated: true, completion: nil)
     }
     
-    func fakeData() {
-        
-        guard let context = context else {
-            return
-        }
-        
-        // TODO: may refactor to CoreDataHelper method
-        guard let chat = NSEntityDescription
-            .insertNewObject(forEntityName: "Chat", into: context) as? Chat else {
-                return
-        }
-    }
-    
     func configure(cell: UITableViewCell, at indexPatch: IndexPath) {
         
         let cell = cell as! ChatCell
-        guard let chat = fetchedResultsController?.object(at: indexPatch) else {
-            return
-        }
+        guard let chat = fetchedResultsController?.object(at: indexPatch) else { return }
+        guard let contact = chat.participants?.anyObject() as? Contact else { return }
+        guard let lastMessage = chat.lastMessage,
+            let timestamp = lastMessage.timestamp,
+            let text = lastMessage.text else { return }
+        
         
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/YY"
-        cell.nameLabel.text = "David"
-        cell.dateLabel.text = formatter.string(from: Date())
-        cell.messageLabel.text = "Hey!"
+        cell.nameLabel.text = contact.fullName
+        cell.dateLabel.text = formatter.string(from: timestamp as Date)
+        cell.messageLabel.text = text
     }
     
     func created(chat: Chat, inContext context: NSManagedObjectContext) {
@@ -153,10 +145,13 @@ extension AllChatsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard let chat = fetchedResultsController?.object(at: indexPath) else {
-            return
-        }
+        guard let chat = fetchedResultsController?.object(at: indexPath) else { return }
+        let chatVC = ChatViewController()
+        chatVC.context = context
+        chatVC.chat = chat
         
+        navigationController?.pushViewController(chatVC, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }
