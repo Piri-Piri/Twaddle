@@ -83,6 +83,8 @@ class ChatViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(messageAreaConstraints)
         
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
         
         tableView.register(MessageCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.dataSource = self
@@ -90,11 +92,13 @@ class ChatViewController: UIViewController {
         
         tableView.estimatedRowHeight = 44
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
+        tableView.backgroundView = UIImageView(image: UIImage(named: "MessageBubble"))
+        tableView.separatorColor = UIColor.clear
+        tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        tableView.estimatedSectionHeaderHeight = 25
         
         let tableViewConstraints: [NSLayoutConstraint] = [
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: newMessageArea.topAnchor)
@@ -111,6 +115,9 @@ class ChatViewController: UIViewController {
                                                name: Notification.Name.UIKeyboardWillHide,
                                                object: nil)
         
+        if let mainContext = context?.parent ?? context {
+            NotificationCenter.default.addObserver(self, selector: #selector(contextUpdated), name: NSNotification.Name.NSManagedObjectContextObjectsDidChange, object: mainContext)
+        }
         
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
         tapRecognizer.numberOfTapsRequired = 1
@@ -160,6 +167,7 @@ class ChatViewController: UIViewController {
     
     func sendTapped(button: UIButton) {
         guard let text = newMessageField.text, text.characters.count > 0 else { return }
+        checkTemporaryContext()
         guard let context = context else { return }
         
         // TODO: may refactor to CoreDataHelper method
@@ -171,7 +179,6 @@ class ChatViewController: UIViewController {
         msg.timestamp = NSDate()
         msg.incoming = false
         
-        addNew(message: msg)
         // TODO: refactor to CoreDataHelper method
         do {
             try context.save()
@@ -180,10 +187,6 @@ class ChatViewController: UIViewController {
         }
         
         newMessageField.text = ""
-        
-        tableView.reloadData()
-        tableView.scrollToBottom()
-        
         view.endEditing(true)
     }
     
@@ -208,6 +211,35 @@ class ChatViewController: UIViewController {
             ($0.timestamp as! Date) < ($1.timestamp as! Date)
         }
         sections[startDay] = messages
+    }
+    
+    func contextUpdated(notification: NSNotification) {
+    
+        guard let set = (notification.userInfo![NSInsertedObjectsKey] as? NSSet) else { return }
+        let objects = set.allObjects
+        for object in objects {
+        
+            guard let message = object as? Message else { continue }
+            if message.chat?.objectID == chat?.objectID {
+                addNew(message: message)
+            }
+            tableView.reloadData()
+            tableView.scrollToBottom()
+        }
+    }
+    
+    func checkTemporaryContext() {
+        if let mainContext = context?.parent, let chat = chat {
+            
+            let tmpContext = context
+            context = mainContext
+            do {
+                try tmpContext?.save()
+            } catch {
+                print("Error: Saving context (tmp) failed: \(error.localizedDescription)")
+            }
+            self.chat = mainContext.object(with: chat.objectID) as? Chat
+        }
     }
 
 }
