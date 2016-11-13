@@ -22,21 +22,32 @@ class ChatViewController: UIViewController {
     // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?
     
+    var chat: Chat?
+    
+    private enum ChatError: Error {
+        case noChat
+        case noContext
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // TODO: may refactor to CoreDataHelper method
         do {
+            guard let chat = chat else { throw ChatError.noChat }
+            guard let context = context else { throw ChatError.noContext }
+            
             let request: NSFetchRequest<Message> = Message.fetchRequest()
             request.sortDescriptors = [NSSortDescriptor(key: "timestamp", ascending: false)]
-            if let msgs = try context?.fetch(request) {
-                for msg in msgs {
-                    addNew(message: msg)
-                }
+            
+            let msgs = try context.fetch(request)
+            for msg in msgs {
+                addNew(message: msg)
             }
         } catch {
             print("Error: Fetching messages failed: \(error.localizedDescription)")
         }
+        automaticallyAdjustsScrollViewInsets = false
         
         let newMessageArea = UIView()
         newMessageArea.backgroundColor = UIColor.lightGray
@@ -148,13 +159,9 @@ class ChatViewController: UIViewController {
     }
     
     func sendTapped(button: UIButton) {
-        guard let text = newMessageField.text, text.characters.count > 0 else {
-            return
-        }
-            
-        guard let context = context else {
-            return
-        }
+        guard let text = newMessageField.text, text.characters.count > 0 else { return }
+        guard let context = context else { return }
+        
         // TODO: may refactor to CoreDataHelper method
         guard let msg = NSEntityDescription
             .insertNewObject(forEntityName: "Message", into: context) as? Message else {
@@ -181,9 +188,7 @@ class ChatViewController: UIViewController {
     }
     
     func addNew(message: Message) {
-        guard let date = message.timestamp as? Date else {
-            return
-        }
+        guard let date = message.timestamp as? Date else { return }
         
         let calendar = Calendar.current
         let startDay = calendar.startOfDay(for: date)

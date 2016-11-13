@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer {
+class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer, ChatCreationDelegate {
 
     // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?
@@ -70,6 +70,7 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         
         let newChatVC = NewChatViewController()
         newChatVC.context = context
+        newChatVC.chatCreationDelegate = self
         
         let navCtrl = UINavigationController(rootViewController: newChatVC)
         present(navCtrl, animated: true, completion: nil)
@@ -100,6 +101,15 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         cell.nameLabel.text = "David"
         cell.dateLabel.text = formatter.string(from: Date())
         cell.messageLabel.text = "Hey!"
+    }
+    
+    func created(chat: Chat, inContext context: NSManagedObjectContext) {
+        
+        let chatVC = ChatViewController()
+        chatVC.context = context
+        chatVC.chat = chat
+        
+        navigationController?.pushViewController(chatVC, animated: true)
     }
 }
 

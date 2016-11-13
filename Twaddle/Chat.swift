@@ -1,14 +1,15 @@
 //
-//  Chat+ComputedProperties.swift
+//  Chat.swift
 //  Twaddle
 //
-//  Created by David Pirih on 12.11.16.
+//  Created by David Pirih on 13.11.16.
 //  Copyright © 2016 Piri-Piri. All rights reserved.
 //
 
 import CoreData
 
-extension Chat {
+@objc(Chat)
+public class Chat: NSManagedObject {
 
     var lastMessage: Message? {
         
@@ -25,6 +26,10 @@ extension Chat {
             print("Error: Fetching last message for chat failed: \(error.localizedDescription)")
         }
         return nil
+    }
+    
+    func add(participant contact: Contact) {
+        mutableSetValue(forKey: "participants").add(contact)
     }
     
 }

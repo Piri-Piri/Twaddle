@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        let people = [("John", "Nichols"), ("Matt", "Praker")]
+        let people = [("Vera", "Pirih"), ("Alisha", "Pirih"), ("Malou", "Pirih"), ("Kevin", "Pirih")]
         for person in people {
             let contact = NSEntityDescription.insertNewObject(forEntityName: "Contact", into: context) as! Contact
             contact.firstName = person.0

@@ -1,14 +1,15 @@
 //
-//  Contact+ComputedProperties.swift
+//  Contact.swift
 //  Twaddle
 //
-//  Created by David Pirih on 12.11.16.
+//  Created by David Pirih on 13.11.16.
 //  Copyright © 2016 Piri-Piri. All rights reserved.
 //
 
 import CoreData
 
-extension Contact {
+@objc(Contact)
+public class Contact: NSManagedObject {
 
     var sortLetter: String {
         
