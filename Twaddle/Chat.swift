@@ -11,6 +11,12 @@ import CoreData
 @objc(Chat)
 public class Chat: NSManagedObject {
 
+    var isGroupChat: Bool {
+        
+        guard let participantsCount = participants?.count else { return false }
+        return participantsCount > 1
+    }
+    
     var lastMessage: Message? {
         
         let request: NSFetchRequest<Message> = Message.fetchRequest()

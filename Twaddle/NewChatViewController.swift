@@ -136,7 +136,7 @@ extension NewChatViewController: UITableViewDelegate {
         
         chat.add(participant: contact)
         
-        chatCreationDelegate?.created(chat: chat, inContext: context)
+        chatCreationDelegate?.created(chat: chat, in: context)
         dismiss(animated: true, completion: nil)
     }
 }

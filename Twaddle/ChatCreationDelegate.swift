@@ -9,5 +9,5 @@
 import CoreData
 
 protocol ChatCreationDelegate {
-    func created(chat: Chat, inContext context: NSManagedObjectContext)
+    func created(chat: Chat, in context: NSManagedObjectContext)
 }
