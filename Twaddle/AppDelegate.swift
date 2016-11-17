@@ -15,14 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private var contactImporter: ContactImporter?
-    private var contactSyncer: ContextSyncer?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
         let mainContext = CoreDataHelper.shared.persistentContainer.viewContext
         let contactsContext = CoreDataHelper.shared.persistentContainer.newBackgroundContext()
         
-        contactSyncer = ContextSyncer(main: mainContext, background: contactsContext)
         contactImporter = ContactImporter(context: mainContext)
         importContacts(context: contactsContext)
         contactImporter?.listenForChanges()
