@@ -142,7 +142,19 @@ extension FavoritesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         guard let contact = fetchedResultsController?.object(at: indexPath) else { return }
-
+        let chatContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
+        chatContext.parent = context
+        
+        let chat =
+            Chat.existing(directWith: contact, in: chatContext) ?? Chat.new(directWith: contact, in: chatContext)
+        
+        let chatVC = ChatViewController()
+        chatVC.context = chatContext
+        chatVC.chat = chat
+        chatVC.hidesBottomBarWhenPushed = true
+        
+        let _ = navigationController?.pushViewController(chatVC, animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {

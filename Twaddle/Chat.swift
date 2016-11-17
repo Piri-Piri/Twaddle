@@ -38,4 +38,24 @@ public class Chat: NSManagedObject {
         mutableSetValue(forKey: "participants").add(contact)
     }
     
+    static func existing(directWith contact: Contact, in context: NSManagedObjectContext) -> Chat? {
+    
+        let request: NSFetchRequest<Chat> = Chat.fetchRequest()
+        request.predicate = NSPredicate(format: "ANY participants = %@ AND participants.@count = 1", contact)
+        do {
+            let chats = try context.fetch(request)
+            return chats.first
+        } catch {
+            print("Error: Fetching existing chat failed: \(error.localizedDescription)")
+        }
+        return nil
+    }
+    
+    static func new(directWith contact: Contact, in context: NSManagedObjectContext) -> Chat {
+        
+        let chat = NSEntityDescription.insertNewObject(forEntityName: "Chat", into: context) as! Chat
+        chat.add(participant: contact)
+        return chat
+    }
+    
 }

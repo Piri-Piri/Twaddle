@@ -118,23 +118,13 @@ extension NewChatViewController: UITableViewDataSource {
 
 extension NewChatViewController: UITableViewDelegate {
     
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let contact = fetchedResultsController?.object(at: indexPath) else {
             return
         }
         
-        guard let context = context else {
-            return
-        }
-        
-        // TODO: may refactor to CoreDataHelper method
-        guard let chat = NSEntityDescription
-            .insertNewObject(forEntityName: "Chat", into: context) as? Chat else {
-                return
-        }
-        
-        chat.add(participant: contact)
+        guard let context = context else { return }
+        let chat = Chat.existing(directWith: contact, in: context) ?? Chat.new(directWith: contact, in: context)
         
         chatCreationDelegate?.created(chat: chat, in: context)
         dismiss(animated: true, completion: nil)
