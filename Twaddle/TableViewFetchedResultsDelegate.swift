@@ -58,7 +58,3 @@ class TableViewFetchedResultsDelegate: NSObject, NSFetchedResultsControllerDeleg
         tableView.endUpdates()
     }
 }
-
-protocol TableViewFetchedResultsDisplayer {
-    func configure(cell: UITableViewCell, at indexPath: IndexPath)
-}

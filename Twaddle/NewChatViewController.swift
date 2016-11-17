@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NewChatViewController: UIViewController, TableViewFetchedResultsDisplayer {
+class NewChatViewController: UIViewController, ContextViewController, TableViewFetchedResultsDisplayer {
 
     // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?

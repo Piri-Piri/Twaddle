@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class NewGroupViewController: UIViewController {
+class NewGroupViewController: UIViewController, ContextViewController {
 
     var context: NSManagedObjectContext?
     var chatCreationDelegate: ChatCreationDelegate?

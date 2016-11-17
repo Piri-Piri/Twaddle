@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer, ChatCreationDelegate {
+class AllChatsViewController: UIViewController, ContextViewController, TableViewFetchedResultsDisplayer, ChatCreationDelegate {
 
     // TODO: may refactor (CoreDataHelper)?!?
     var context: NSManagedObjectContext?
@@ -25,7 +25,7 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Chats"
+        navigationController?.navigationBar.topItem?.title = "Chats"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "new-chat"),
                                                             style: .plain,
                                                             target: self,
@@ -101,6 +101,7 @@ class AllChatsViewController: UIViewController, TableViewFetchedResultsDisplayer
         let chatVC = ChatViewController()
         chatVC.context = context
         chatVC.chat = chat
+        chatVC.hidesBottomBarWhenPushed = true
         
         navigationController?.pushViewController(chatVC, animated: true)
     }
@@ -166,9 +167,7 @@ extension AllChatsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard let sections = fetchedResultsController?.sections else {
-            return 0
-        }
+        guard let sections = fetchedResultsController?.sections else { return 0 }
 
         return sections[section].numberOfObjects
     }
@@ -201,6 +200,7 @@ extension AllChatsViewController: UITableViewDelegate {
         let chatVC = ChatViewController()
         chatVC.context = context
         chatVC.chat = chat
+        chatVC.hidesBottomBarWhenPushed = true
         
         navigationController?.pushViewController(chatVC, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

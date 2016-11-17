@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class ChatViewController: UIViewController {
+class ChatViewController: UIViewController, ContextViewController {
 
     private let tableView = UITableView(frame: CGRect.zero, style: .grouped)
     private let newMessageField = UITextView()

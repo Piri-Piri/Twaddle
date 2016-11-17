@@ -14,18 +14,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    private var contactImporter: ContactImporter?
+    private var contactSyncer: ContextSyncer?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
+        let mainContext = CoreDataHelper.shared.persistentContainer.viewContext
+        let contactsContext = CoreDataHelper.shared.persistentContainer.newBackgroundContext()
         
-        let allChatsVC = AllChatsViewController()
-        let navCrtl = UINavigationController(rootViewController: allChatsVC)
-        window?.rootViewController = navCrtl
+        contactSyncer = ContextSyncer(main: mainContext, background: contactsContext)
+        contactImporter = ContactImporter(context: mainContext)
+        importContacts(context: contactsContext)
+        contactImporter?.listenForChanges()
         
-        let context = CoreDataHelper.shared.persistentContainer.viewContext
-        allChatsVC.context = context
+        let tabCtrl = UITabBarController()
+        let vcData: [(UIViewController, UIImage, String)] = [
+            (FavoritesViewController(), UIImage(named: "favorites_icon")!, "Favorites"),
+            (ContactsViewController(), UIImage(named: "contact_icon")!, "Contacts"),
+            (AllChatsViewController(), UIImage(named: "chat_icon")!, "Chats")
+        ]
+        let vcs = vcData.map {
+            (vc: UIViewController, image: UIImage, title: String) -> UINavigationController in
+            
+            if var vc = vc as? ContextViewController {
+                vc.context = mainContext
+            }
+            let navCtrl = UINavigationController(rootViewController: vc)
+            navCtrl.tabBarItem.image = image
+            navCtrl.tabBarItem.title = title
+            return navCtrl
+        }
+        tabCtrl.viewControllers = vcs
         
-        // TODO: remove fake data
-        fakeData(context: context)
+        window?.rootViewController = tabCtrl
         
         return true
     }
@@ -52,29 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-    func fakeData(context: NSManagedObjectContext) {
+    func importContacts(context: NSManagedObjectContext) {
         let dataSeeded = UserDefaults.standard.bool(forKey: "dataSeeded")
-        guard !dataSeeded else {
-            return
-        }
+        guard !dataSeeded else { return }
         
-        let people = [("Vera", "Pirih"), ("Alisha", "Pirih"), ("Malou", "Pirih"), ("Kevin", "Pirih")]
-        for person in people {
-            let contact = NSEntityDescription.insertNewObject(forEntityName: "Contact", into: context) as! Contact
-            contact.firstName = person.0
-            contact.lastName = person.1
-        }
-        
-        // TODO: refactor to CoreDataHelper method
-        do {
-            try context.save()
-        } catch {
-            print("Error: Saving contacts (fake data) failed: \(error.localizedDescription)")
-        }
+        contactImporter?.fetch()
         
         UserDefaults.standard.set(true, forKey: "dataSeeded")
     }
-    
 
 }
 
