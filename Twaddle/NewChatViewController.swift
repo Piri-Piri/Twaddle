@@ -41,6 +41,7 @@ class NewChatViewController: UIViewController, ContextViewController, TableViewF
         
         if let context = context {
             let request: NSFetchRequest<Contact> = Contact.fetchRequest()
+            request.predicate = NSPredicate(format: "storageId != nil")
             request.sortDescriptors = [
                 NSSortDescriptor(key: "lastName", ascending: true),
                 NSSortDescriptor(key: "firstName", ascending: true)
@@ -48,7 +49,7 @@ class NewChatViewController: UIViewController, ContextViewController, TableViewF
             fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
                                                                   managedObjectContext: context,
                                                                   sectionNameKeyPath: "sortLetter",
-                                                                  cacheName: "NewChatViewController")
+                                                                  cacheName: nil)
             fetchedResultsDelegate =
                 TableViewFetchedResultsDelegate(tableView: tableView,
                                                 displayer: self)
@@ -89,9 +90,7 @@ extension NewChatViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        guard let sections = fetchedResultsController?.sections else {
-            return 0
-        }
+        guard let sections = fetchedResultsController?.sections else { return 0 }
         return sections[section].numberOfObjects
     }
     
@@ -99,14 +98,13 @@ extension NewChatViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         configure(cell: cell, at: indexPath)
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        guard let sections = fetchedResultsController?.sections else {
-            return nil
-        }
+        guard let sections = fetchedResultsController?.sections else { return nil }
         return sections[section].name
     }
     

@@ -41,10 +41,17 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
         
         if let context = context {
             let request: NSFetchRequest<Contact> = Contact.fetchRequest()
-            request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true)]
-            request.sortDescriptors = [NSSortDescriptor(key: "firstName", ascending: true)]
-            fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: "sortLetter", cacheName: nil)
-            fetchedResultsDelegate = TableViewFetchedResultsDelegate(tableView: tableView, displayer: self)
+            request.sortDescriptors = [
+                NSSortDescriptor(key: "lastName", ascending: true),
+                NSSortDescriptor(key: "firstName", ascending: true)
+            ]
+            fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                                  managedObjectContext: context,
+                                                                  sectionNameKeyPath: "sortLetter",
+                                                                  cacheName: nil)
+            fetchedResultsDelegate =
+                TableViewFetchedResultsDelegate(tableView: tableView,
+                                                displayer: self)
             fetchedResultsController?.delegate = fetchedResultsDelegate
             do {
                 try fetchedResultsController?.performFetch()
@@ -53,6 +60,7 @@ class ContactsViewController: UIViewController, ContextViewController, TableView
             }
         }
         
+        // MARK: BUG: No contact in coredata on first run
         let resultsVC = ContactSearchResultsController()
         resultsVC.contactSelector = self
         resultsVC.contacts = (fetchedResultsController?.fetchedObjects)!

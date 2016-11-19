@@ -50,6 +50,7 @@ class NewGroupParticipantsViewController: UIViewController, ContextViewControlle
         
         if let context = context {
             let request: NSFetchRequest<Contact> = Contact.fetchRequest()
+            request.predicate = NSPredicate(format: "storageId != nil")
             request.sortDescriptors = [NSSortDescriptor(key: "lastName", ascending: true)]
             request.sortDescriptors = [NSSortDescriptor(key: "firstName", ascending: true)]
             

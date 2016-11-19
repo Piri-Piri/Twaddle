@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,15 +16,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     private var contactImporter: ContactImporter?
+    private var contactSyncer: ContextSyncer?
+    private var contactsUploadSyncer: ContextSyncer?
+    private var firebaseSyncer: ContextSyncer?
+    
+    private var firebaseStore: FirebaseStore?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-    
+        
+        FIRApp.configure()
+        
         let mainContext = CoreDataHelper.shared.persistentContainer.viewContext
         let contactsContext = CoreDataHelper.shared.persistentContainer.newBackgroundContext()
+        let firebaseContext = CoreDataHelper.shared.persistentContainer.newBackgroundContext()
+        
+        contactSyncer = ContextSyncer(main: mainContext, background: contactsContext)
+        
+        let firebaseStore = FirebaseStore(context: firebaseContext)
+        self.firebaseStore = firebaseStore
+        
+        contactsUploadSyncer = ContextSyncer(main: contactsContext, background: firebaseContext)
+        contactsUploadSyncer?.remoteStore = firebaseStore
+        firebaseSyncer = ContextSyncer(main: mainContext, background: firebaseContext)
+        firebaseSyncer?.remoteStore = firebaseStore
         
         contactImporter = ContactImporter(context: mainContext)
-        importContacts(context: contactsContext)
-        contactImporter?.listenForChanges()
+        //importContacts(context: contactsContext)
         
         let tabCtrl = UITabBarController()
         let vcData: [(UIViewController, UIImage, String)] = [
@@ -42,9 +60,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             navCtrl.tabBarItem.title = title
             return navCtrl
         }
+        
         tabCtrl.viewControllers = vcs
         
-        window?.rootViewController = tabCtrl
+        if firebaseStore.hasAuth() {
+            
+            firebaseStore.startSyncing()
+            contactImporter?.listenForChanges()
+            
+            window?.rootViewController = tabCtrl
+        } else {
+            
+            let signUpVC = SignUpViewController()
+            signUpVC.remoteStore = firebaseStore
+            signUpVC.rootViewController = tabCtrl
+            signUpVC.contactImporter = contactImporter
+            
+            window?.rootViewController = signUpVC
+        }
         
         return true
     }

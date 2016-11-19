@@ -93,7 +93,7 @@ class ChatViewController: UIViewController, ContextViewController {
         
         tableView.estimatedRowHeight = 44
         
-        tableView.backgroundView = UIImageView(image: UIImage(named: "MessageBubble"))
+        tableView.backgroundView = UIImageView(image: UIImage(named: "whaletalk-Bg"))
         tableView.separatorColor = UIColor.clear
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 25
